@@ -1,0 +1,28 @@
+{
+  "name": "loopback-connector-swagger",
+  "version": "1.0.0",
+  "description": "Connect Loopback to a Swagger-compliant API",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint .",
+    "test": "mocha",
+    "posttest": "npm run lint"
+  },
+  "dependencies": {
+    "debug": "^2.2.0",
+    "swagger-client": "^2.1.13"
+  },
+  "devDependencies": {
+    "eslint": "^2.7.0",
+    "eslint-config-loopback": "^1.0.0",
+    "loopback": "2.x.x",
+    "loopback-datasource-juggler": "2.x.x",
+    "mocha": "^2.4.5",
+    "should": "^8.3.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-connector-swagger.git"
+  },
+  "license": "SEE LICENSE IN LICENSE.md"
+}
