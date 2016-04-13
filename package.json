@@ -10,7 +10,9 @@
   },
   "dependencies": {
     "debug": "^2.2.0",
-    "swagger-client": "^2.1.13"
+    "js-yaml": "^3.6.0",
+    "swagger-client": "^2.1.13",
+    "swagger-parser": "^3.4.1"
   },
   "devDependencies": {
     "eslint": "^2.7.0",
