@@ -67,6 +67,16 @@ Once the model is created, all available Swagger API operations can be accessed 
     });
   ```
 
+Generated methods use swagger's __operationId__.  If there is a nested URL path, the connector will append an `_` in place of the `/`.  For example, looking at a swagger.json file, you would see something like:
+
+```
+paths: {
+  /weather/forecast: {
+    operationId: "weather.forecast",
+```
+
+This means you can call `model.weather_forecast()` to access this endpoint programmatically.
+
 ### Extend a model to wrap/mediate API Operations
 Once the model is defined, it can be wrapped or mediated to define new methods. The following example simplifies the `getPetById` operation to a method that takes `petID` and returns a Pet instance.
 
