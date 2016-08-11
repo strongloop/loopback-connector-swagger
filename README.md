@@ -5,7 +5,7 @@ The Swagger connector enables LoopBack applications to interact with other REST 
 
 In your application root directory, enter:
 ```
-$ npm install loopback-connector-rest --save
+$ npm install loopback-connector-swagger --save
 ```
 
 This will install the module from npm and add it as a dependency to the application's `package.json` file.
