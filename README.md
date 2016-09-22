@@ -108,7 +108,7 @@ Once you define the model, you can wrap or mediate it to define new methods. The
 
 ```javascript
 PetService.searchPet = function(petID, cb){
-  PetService.getPetById({petId: petID, function(err, res){
+  PetService.getPetById({petId: petID}, function(err, res){
     if(err) cb(err, null);
     var result = res.data;
     cb(null, result);
