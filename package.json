@@ -17,7 +17,7 @@
   "devDependencies": {
     "eslint": "^2.7.0",
     "eslint-config-loopback": "^1.0.0",
-    "loopback": "^3.0.0-alpha.5",
+    "loopback": "^3.0.0",
     "mocha": "^2.4.5",
     "should": "^8.3.0"
   },
