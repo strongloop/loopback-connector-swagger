@@ -1,7 +1,7 @@
 # loopback-connector-swagger
 The Swagger connector enables LoopBack applications to interact with other REST APIs described by the [OpenAPI (Swagger) Specification v.2.0](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md).
 
-## Installation 
+## Installation
 
 In your application root directory, enter:
 ```
@@ -31,15 +31,15 @@ With JSON in `datasources.json` (for example, with basic authentication):
     "connector": "swagger",
     "spec": "http://petstore.swagger.io/v2/swagger.json",
     "security": {
-      "type" : "basic", 
+      "type" : "basic",
       "username": "the user name",
       "password": "thepassword"
-}    
+}
 ```
 
 ## Data source properties
 
-Specify the options for the data source with the following properties. 
+Specify the options for the data source with the following properties.
 
 | Property | Description | Default   |
 |----------|-------------|-----------|
@@ -103,17 +103,50 @@ PetService.getPetById({petId: 1}, function (err, res){
 });
 ```
 
+#### How model methods are named for given Swagger API Operations:
+This connector uses [swagger-client](https://github.com/swagger-api/swagger-js) which dominates the naming of generated methods for calling client API operations.
+
+Following is how it works:
+
+- When `operationId` is present, for example:
+
+```javascript
+paths: {
+  /weather/forecast:
+  get:
+    ...
+    operationId: weather.forecast
+    ...
+```
+  Here, as `operationId` is present in Swagger specification, the generated method is named equivalent to `operationId`.
+
+  Note:
+      if `operationId` is of format equivalent to calling a nested function such as: `weather.forecast`, the resulting method name will replace `.` with `_` i.e. `weather.forecast` will result into `weather_forecast`.This means you can call `MyModel.weather_forecast()` to access this endpoint programmatically.
+
+- When `operationId` is not provided in Swagger specification, the method name is formatted as following:
+`<operationType (i.e. get, post, etc)> + _ + <path parts separated by underscores>`
+
+For example:
+```
+/weather/forecast:
+  get:
+    ...
+```
+for above operation, the resulting method name will be: `get_weather_forecast`.
+
+This means you can call `MyModel.get_weather_forecast()` to access this endpoint programmatically.
+
 ### Extend a model to wrap/mediate API Operations
 Once you define the model, you can wrap or mediate it to define new methods. The following example simplifies the `getPetById` operation to a method that takes `petID` and returns a Pet instance.
 
 ```javascript
-PetService.searchPet = function(petID, cb){
-  PetService.getPetById({petId: petID, function(err, res){
-    if(err) cb(err, null);
-    var result = res.data;
-    cb(null, result);
-  });
-};
+  PetService.searchPet = function(petID, cb){
+    PetService.getPetById({petId: petID}, function(err, res){
+      if(err) cb(err, null);
+      var result = res.data;
+      cb(null, result);
+    });
+  };
 ```
 
 This custom method on the `PetService` model can be exposed as REST API end-point. It uses `loopback.remoteMethod` to define the mappings:
