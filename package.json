@@ -1,6 +1,9 @@
 {
   "name": "loopback-connector-swagger",
   "version": "1.0.0",
+  "publishConfig": {
+    "tag": "lts"
+  },
   "description": "Connect Loopback to a Swagger-compliant API",
   "main": "index.js",
   "scripts": {
