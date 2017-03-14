@@ -12,6 +12,7 @@
     "posttest": "npm run lint"
   },
   "dependencies": {
+    "bluebird": "^3.4.7",
     "debug": "^2.2.0",
     "js-yaml": "^3.6.0",
     "swagger-client": "^2.1.13",
