@@ -1,5 +1,11 @@
+// Copyright IBM Corp. 2016,2017. All Rights Reserved.
+// Node module: loopback
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
+'use strict';
+
 var should = require('should');
-//var SwaggerConnector = require('./index');
 var resolveSpec = require('../lib/spec-resolver').resolveSpec;
 var validateSpec = require('../lib/spec-resolver').validateSpec;
 
@@ -7,7 +13,7 @@ describe('Swagger Spec resolver', function() {
   it('Should set url when given spec is a url', function(done) {
     var self = setSpec('http://sample.com/swaggerAPI.json');
     resolveSpec(self, function(err) {
-      should.not.exist(err);
+      if (err) return done(err);
       self.should.have.property('url');
       should(self.spec).be.exactly(null);
       done();
@@ -18,7 +24,7 @@ describe('Swagger Spec resolver', function() {
     function(done) {
       var self = setSpec(require('./fixtures/petStore'));
       resolveSpec(self, function(err) {
-        should.not.exist(err);
+        if (err) return done(err);
         self.spec.should.have.property('swagger');
         done();
       });
@@ -38,7 +44,7 @@ describe('Swagger Spec resolver', function() {
       function(done) {
         var self = setSpec('./test/fixtures/petStore.json');
         resolveSpec(self, function(err) {
-          should.not.exist(err);
+          if (err) return done(err);
           self.spec.should.have.property('swagger');
           done();
         });
@@ -48,7 +54,7 @@ describe('Swagger Spec resolver', function() {
       function(done) {
         var self = setSpec('./test/fixtures/petStore.yaml');
         resolveSpec(self, function(err) {
-          should.not.exist(err);
+          if (err) return done(err);
           self.spec.should.have.property('swagger');
           done();
         });
@@ -58,7 +64,7 @@ describe('Swagger Spec resolver', function() {
       function(done) {
         var self = setSpec('./test/fixtures/petStore.yml');
         resolveSpec(self, function(err) {
-          should.not.exist(err);
+          if (err) return done(err);
           self.spec.should.have.property('swagger');
           done();
         });
@@ -80,17 +86,19 @@ describe('Swagger Spec resolver', function() {
         var self = setSpec('./test/fixtures/petStore.yaml');
         var error = null;
         resolveSpec(self, function(err) {
-          should.not.exist(err);
-          validate(self.spec);
-          done();
+          if (err) return done(err);
+          validateSpec(self.spec, done);
         });
       });
 
     it('should throw error if validation fails', function(done) {
-      var self = setSpec({ this: 'that' });
+      var self = setSpec({this: 'that'});
       resolveSpec(self, function(err) {
-        validate(self.spec);
-        done();
+        if (err) return done(err);
+        validateSpec(self.spec, function(err) {
+          should.exist(err);
+          done();
+        });
       });
     });
   });
@@ -100,15 +108,4 @@ function setSpec(spec) {
   return {
     spec: spec,
   };
-}
-
-function validate(spec) {
-  try {
-    validateSpec(self.spec);
-    should(error).be.eql(null);
-    return;
-  } catch (err) {
-    should.exist(err);
-    return;
-  }
 }
