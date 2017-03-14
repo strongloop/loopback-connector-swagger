@@ -1,3 +1,10 @@
+// Copyright IBM Corp. 2016,2017. All Rights Reserved.
+// Node module: loopback
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
+'use strict';
+
 var should = require('should');
 var oAuth = require('../lib/oAuth');
 
@@ -22,7 +29,7 @@ describe('oAuth - standalone', function() {
       atAuth = new oAuth.AccessTokenAuthorization('sampleOAuth',
         'sampleAccessToken',
         'query');
-      reqObj = { url: 'http://sampleApi/api/getPet' };
+      reqObj = {url: 'http://sampleApi/api/getPet'};
       done();
     });
 
@@ -57,7 +64,7 @@ describe('oAuth - standalone', function() {
     beforeEach(function(done) {
       atAuth = new oAuth.AccessTokenAuthorization('sampleOAuth',
         'sampleAccessToken');
-      reqObj = { url: 'http://sampleApi/api/getPet' };
+      reqObj = {url: 'http://sampleApi/api/getPet'};
       done();
     });
 
@@ -72,7 +79,7 @@ describe('oAuth - standalone', function() {
 
     it('adds access token in headers when authorization header is empty',
       function(done) {
-        reqObj.headers = { Authorization: '' };
+        reqObj.headers = {Authorization: ''};
         atAuth.apply(reqObj);
         reqObj.headers.should.have.property('Authorization')
           .equal('Bearer sampleAccessToken');
@@ -80,7 +87,7 @@ describe('oAuth - standalone', function() {
       });
     it('treats "authorization" header case-insensitively',
       function(done) {
-        reqObj.headers = { autHoriZation: '' };
+        reqObj.headers = {autHoriZation: ''};
         atAuth.apply(reqObj);
         reqObj.headers.should.have.property('autHoriZation')
           .equal('Bearer sampleAccessToken');
@@ -88,7 +95,7 @@ describe('oAuth - standalone', function() {
       });
     it('does not add to authorization header if one already present',
       function(done) {
-        reqObj.headers = { Authorization: 'alreadyIamhere' };
+        reqObj.headers = {Authorization: 'alreadyIamhere'};
         atAuth.apply(reqObj);
         reqObj.headers.should.have.property('Authorization')
           .equal('alreadyIamhere');
