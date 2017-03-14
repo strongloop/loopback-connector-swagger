@@ -100,7 +100,19 @@ describe('swagger connector', function() {
           done();
         });
       });
+
+      it('supports model methods returning a Promise', done => {
+        var PetService = ds.createModel('PetService', {});
+        PetService.getPetById({petId: 1}).then(
+          function onSuccess(res) {
+            res.should.have.property('status', 200);
+            done();
+          },
+          /* on error */ done
+        );
+      });
     });
+
     // out of scope of initial release
     describe.skip('models with remotingEnabled', function() {
       let ds;
@@ -164,6 +176,26 @@ describe('swagger connector', function() {
         events.push('after execute');
         next();
       });
+      PetService.getPetById({petId: 1}, function(err, response) {
+        assert.deepEqual(events, ['before execute', 'after execute']);
+        done();
+      });
+    });
+
+    it('supports Promise-based connector-hooks', done => {
+      const events = [];
+      const connector = ds.connector;
+
+      connector.observe('before execute', ctx => {
+        events.push('before execute');
+        return Promise.resolve();
+      });
+
+      connector.observe('after execute', ctx => {
+        events.push('after execute');
+        return Promise.resolve();
+      });
+
       PetService.getPetById({petId: 1}, function(err, response) {
         assert.deepEqual(events, ['before execute', 'after execute']);
         done();
