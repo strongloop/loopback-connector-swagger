@@ -1,3 +1,10 @@
+// Copyright IBM Corp. 2016,2017. All Rights Reserved.
+// Node module: loopback
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
+'use strict';
+
 var assert = require('assert');
 var should = require('should');
 var loopback = require('loopback');
@@ -15,8 +22,8 @@ describe('Swagger connector - security', function() {
       ds.on('connected', function() {
         var PetService = ds.createModel('PetService', {});
         // with mock:true, swagger-client sends the req object it uses to make
-        //http calls and stops processing request further
-        var req = PetService.getPetById({ petId: 1 }, { mock: true });
+        // http calls and stops processing request further
+        var req = PetService.getPetById({petId: 1}, {mock: true});
         var auth = req.headers.Authorization.split(' ');
         req.headers.should.have.property('Authorization');
         auth[0].should.equal('Basic');
@@ -35,7 +42,7 @@ describe('Swagger connector - security', function() {
       });
       ds.on('connected', function() {
         var PetService = ds.createModel('PetService', {});
-        var req = PetService.getPetById({ petId: 1 }, { mock: true });
+        var req = PetService.getPetById({petId: 1}, {mock: true});
         req.url.should.equal(url + '1?api_key=abc12');
         done();
       });
@@ -50,7 +57,7 @@ describe('Swagger connector - security', function() {
       });
       ds.on('connected', function() {
         var PetService = ds.createModel('PetService', {});
-        var req = PetService.getPetById({ petId: 1 }, { mock: true });
+        var req = PetService.getPetById({petId: 1}, {mock: true});
         req.url.should.equal(url + '1');
         req.headers.api_key.should.equal('abc12');
         done();
@@ -67,7 +74,7 @@ describe('Swagger connector - security', function() {
       });
       ds.on('connected', function() {
         var PetService = ds.createModel('PetService', {});
-        var req = PetService.addPet({ body: { name: 'topa' }}, { mock: true });
+        var req = PetService.addPet({body: {name: 'topa'}}, {mock: true});
         req.headers.should.have.property('Authorization');
         req.headers.Authorization.should.equal('Bearer abc123abc');
         done();
@@ -76,14 +83,14 @@ describe('Swagger connector - security', function() {
 
     it('supports oauth2 - in query', function(done) {
       var ds = createDataSource('test/fixtures/petStore.json', {
-        name: 'x-auth', //custom extension to securityDefinition obj
+        name: 'x-auth', // custom extension to securityDefinition obj
         type: 'oauth2',
         accessToken: 'abc123abc',
         in: 'query',
       });
       ds.on('connected', function() {
         var PetService = ds.createModel('PetService', {});
-        var req = PetService.getPetById({ petId: 1 }, { mock: true });
+        var req = PetService.getPetById({petId: 1}, {mock: true});
         req.url.should.equal(url + '1?access_token=abc123abc');
         done();
       });
