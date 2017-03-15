@@ -37,6 +37,62 @@ With JSON in `datasources.json` (for example, with basic authentication):
 }
 ```
 
+### Caching
+
+As an experimental feature, loopback-connector-swagger is able to cache the result of `GET` requests.
+
+**Important: we support only one cache invalidation mechanism - expiration based on a static TTL value.**
+
+To enable caching, you need to specify:
+
+ - `cache.model` (required) - name of the model providing access to the cache.
+   The model should be extending loopback's built-in `KeyValueModel`
+   and be attached to one of key-value datasources (e.g. Redis or
+   eXtremeScale).
+
+ - `cache.ttl` (required) - time to live for cache entries, the value
+   is in milliseconds. Note that certain cache implementations (notably
+   eXtremeScale) do not support sub-second precision for TTL.
+
+#### Example configuration
+
+`server/datasources.json`
+
+```json
+{
+  "SwaggerDS": {
+    "connector": "swagger",
+    "cache": {
+      "model": "SwaggerCache",
+      "ttl": 100
+    }
+  },
+  "cache": {
+    "connector": "kv-redis",
+  }
+}
+```
+
+`common/models/swagger-cache.json`
+
+```
+{
+  "name": "SwaggerCache",
+  "base": "KeyValueModel",
+  // etc.
+}
+```
+
+`server/model-config.json`
+```
+{
+  "SwaggerCache": {
+    "dataSource": "cache",
+    "public": false
+  }
+}
+```
+
 ## Data source properties
 
 Specify the options for the data source with the following properties.

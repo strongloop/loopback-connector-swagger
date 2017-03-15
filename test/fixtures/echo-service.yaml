@@ -1,0 +1,51 @@
+swagger: "2.0"
+info:
+  title: Echo Service
+  description: This is a sample echo service.
+  version: "1.0.0"
+paths:
+  /echo:
+    get:
+      summary: Echo back the message
+      operationId: echo
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        -
+          name: message
+          in: query
+          description: The message to echo back.
+          required: false
+          type: string
+        -
+          name: Accept-Language
+          in: header
+          description: Specify the user's language
+          required: false
+          type: string
+      responses:
+        200:
+          description: Success response
+          schema:
+            type: 'object'
+            properties:
+              message:
+                type: string
+              language:
+                type: string
+              timestamp:
+                type: integer
+  /uids:
+    post:
+      summary: Create a new unique ID value
+      operationId: createId
+      responses:
+        200:
+          description: Success response
+          schema:
+            type: 'object'
+            properties:
+              id:
+                type: string
