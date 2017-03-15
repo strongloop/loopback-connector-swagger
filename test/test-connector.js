@@ -132,6 +132,17 @@ describe('swagger connector', function() {
         done();
       });
     });
+
+    it('allows models to be attached before the spec is loaded', done => {
+      const ds = createDataSource('test/fixtures/petStore.json');
+      const PetService = ds.createModel('PetService', {});
+
+      ds.once('connected', () => {
+        should(Object.keys(PetService)).containEql('getPetById');
+        should(typeof PetService.getPetById).eql('function');
+        done();
+      });
+    });
   });
 
   describe('Swagger invocations', function() {
