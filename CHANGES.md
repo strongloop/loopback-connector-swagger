@@ -1,3 +1,13 @@
+2017-03-16, Version 3.1.0
+=========================
+
+ * Implement simple caching for GET requests (Miroslav Bajtoš)
+
+ * Allow models to be attached before spec is loaded (Miroslav Bajtoš)
+
+ * Update dev dependencies to latest (Miroslav Bajtoš)
+
+
 2017-03-14, Version 3.0.0
 =========================
 
