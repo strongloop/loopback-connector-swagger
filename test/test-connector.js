@@ -1,3 +1,10 @@
+// Copyright IBM Corp. 2016,2017. All Rights Reserved.
+// Node module: loopback
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
+'use strict';
+
 var assert = require('assert');
 var should = require('should');
 var loopback = require('loopback');
@@ -8,7 +15,7 @@ describe('swagger connector', function() {
       it('when opted validates swagger spec: invalid spec',
         function(done) {
           var dsErrorProne =
-            createDataSource({ 'swagger': { 'version': '2.0' }}, true);
+            createDataSource({'swagger': {'version': '2.0'}}, true);
           dsErrorProne.on('error', function(err) {
             should.exist(err);
             done();
@@ -87,15 +94,28 @@ describe('swagger connector', function() {
 
       it('supports model methods', function(done) {
         var PetService = ds.createModel('PetService', {});
-        PetService.getPetById({ petId: 1 }, function(err, res) {
-          should.not.exist(err);
+        PetService.getPetById({petId: 1}, function(err, res) {
+          if (err) return done(err);
           res.status.should.eql(200);
           done();
         });
       });
+
+      it('supports model methods returning a Promise', done => {
+        var PetService = ds.createModel('PetService', {});
+        PetService.getPetById({petId: 1}).then(
+          function onSuccess(res) {
+            res.should.have.property('status', 200);
+            done();
+          },
+          /* on error */ done
+        );
+      });
     });
+
     // out of scope of initial release
     describe.skip('models with remotingEnabled', function() {
+      let ds;
       before(function(done) {
         ds = createDataSource('test/fixtures/petStore.json', false, true);
         ds.on('connected', function() {
@@ -106,9 +126,20 @@ describe('swagger connector', function() {
       it('creates models', function(done) {
         var PetService = ds.createModel('PetService', {});
         (typeof PetService.getPetById).should.eql('function');
-        PetService.getPetById.shared.should.be.true;
+        PetService.getPetById.shared.should.equal(true);
         (typeof PetService.addPet).should.eql('function');
-        PetService.addPet.shared.should.be.true;
+        PetService.addPet.shared.should.equal(true);
+        done();
+      });
+    });
+
+    it('allows models to be attached before the spec is loaded', done => {
+      const ds = createDataSource('test/fixtures/petStore.json');
+      const PetService = ds.createModel('PetService', {});
+
+      ds.once('connected', () => {
+        should(Object.keys(PetService)).containEql('getPetById');
+        should(typeof PetService.getPetById).eql('function');
         done();
       });
     });
@@ -126,17 +157,17 @@ describe('swagger connector', function() {
     });
 
     it('invokes the PetService', function(done) {
-      PetService.getPetById({ petId: 1 }, function(err, res) {
+      PetService.getPetById({petId: 1}, function(err, res) {
         res.status.should.eql(200);
         done();
       });
     });
 
     it('supports a request for xml content', function(done) {
-      PetService.getPetById({ petId: 1 },
-        { responseContentType: 'application/xml' },
+      PetService.getPetById({petId: 1},
+        {responseContentType: 'application/xml'},
           function(err, res) {
-            should.not.exist(err);
+            if (err) return done(err);
             res.status.should.eql(200);
             res.headers['content-type'].should.eql('application/xml');
             done();
@@ -156,14 +187,33 @@ describe('swagger connector', function() {
         events.push('after execute');
         next();
       });
-      PetService.getPetById({ petId: 1 }, function(err, response) {
+      PetService.getPetById({petId: 1}, function(err, response) {
+        assert.deepEqual(events, ['before execute', 'after execute']);
+        done();
+      });
+    });
+
+    it('supports Promise-based connector-hooks', done => {
+      const events = [];
+      const connector = ds.connector;
+
+      connector.observe('before execute', ctx => {
+        events.push('before execute');
+        return Promise.resolve();
+      });
+
+      connector.observe('after execute', ctx => {
+        events.push('after execute');
+        return Promise.resolve();
+      });
+
+      PetService.getPetById({petId: 1}, function(err, response) {
         assert.deepEqual(events, ['before execute', 'after execute']);
         done();
       });
     });
   });
 });
-
 
 function createDataSource(spec, validateSpec, remotingEnabled) {
   return loopback.createDataSource('swagger', {
