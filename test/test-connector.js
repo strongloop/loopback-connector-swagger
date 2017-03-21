@@ -15,7 +15,7 @@ describe('swagger connector', function() {
       it('when opted validates swagger spec: invalid spec',
         function(done) {
           var dsErrorProne =
-            createDataSource({'swagger': {'version': '2.0'}}, true);
+            createDataSource({'swagger': {'version': '2.0'}}, {validate: true});
           dsErrorProne.on('error', function(err) {
             should.exist(err);
             done();
@@ -117,7 +117,8 @@ describe('swagger connector', function() {
     describe.skip('models with remotingEnabled', function() {
       let ds;
       before(function(done) {
-        ds = createDataSource('test/fixtures/petStore.json', false, true);
+        ds = createDataSource('test/fixtures/petStore.json',
+          {remotingEnabled: true});
         ds.on('connected', function() {
           done();
         });
@@ -212,14 +213,33 @@ describe('swagger connector', function() {
         done();
       });
     });
+
+    it('supports custom swagger client', done => {
+      const customSwaggerClient = {
+        execute: function(requestObject) {
+          requestObject.on.response({id: 'custom'});
+        },
+      };
+
+      const ds = createDataSource('test/fixtures/petStore.json',
+        {swaggerClient: customSwaggerClient});
+
+      ds.on('connected', () => {
+        const PetService = ds.createModel('PetService', {});
+        PetService.getPetById({petId: 7}, function(err, res) {
+          if (err) return done(err);
+          should(res).containDeep({id: 'custom'});
+          done();
+        });
+      });
+    });
   });
 });
 
-function createDataSource(spec, validateSpec, remotingEnabled) {
-  return loopback.createDataSource('swagger', {
+function createDataSource(spec, options) {
+  const config = Object.assign({
     connector: require('../index'),
     spec: spec,
-    validate: validateSpec,
-    remotingEnabled: remotingEnabled,
-  });
-}
+  }, options);
+  return loopback.createDataSource('swagger', config);
+} 
