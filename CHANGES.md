@@ -1,3 +1,9 @@
+2017-04-03, Version 3.2.0
+=========================
+
+ * adding swagger client using option (Madhavan R)
+
+
 2017-03-16, Version 3.1.0
 =========================
 
