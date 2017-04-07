@@ -233,6 +233,19 @@ describe('swagger connector', function() {
         });
       });
     });
+
+    it('accepts url as parameter when swagger spec has no host info',
+    function(done) {
+      var ds = createDataSource('./test/fixtures/petStore.no_host.json',
+        {url: 'http://petstore.swagger.io'});
+      ds.on('connected', function() {
+        const PetService = ds.createModel('PetService', {});
+        PetService.getPetById({petId: 1}, function(err, res) {
+          res.status.should.eql(200);
+          done();
+        });
+      });
+    });
   });
 });
 
@@ -242,4 +255,4 @@ function createDataSource(spec, options) {
     spec: spec,
   }, options);
   return loopback.createDataSource('swagger', config);
-} 
+}
