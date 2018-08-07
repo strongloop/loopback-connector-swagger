@@ -3,7 +3,7 @@
   "version": "3.2.0",
   "description": "Connect Loopback to a Swagger-compliant API",
   "engines": {
-    "node": ">=4"
+    "node": ">=6"
   },
   "main": "index.js",
   "scripts": {
@@ -29,5 +29,6 @@
     "type": "git",
     "url": "https://github.com/strongloop/loopback-connector-swagger.git"
   },
-  "license": "SEE LICENSE IN LICENSE.md"
+  "copyright.owner": "IBM Corp.",
+  "license": "MIT"
 }
