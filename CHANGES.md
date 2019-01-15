@@ -1,3 +1,17 @@
+2019-01-15, Version 3.2.1
+=========================
+
+ * Drop Node.js 4 in CI (Diana Lau)
+
+ * update license for consistency (Diana Lau)
+
+ * Add stalebot configuration (Kevin Delisle)
+
+ * Add CODEOWNER file (Diana Lau)
+
+ * add .travis.yml for CI (Diana Lau)
+
+
 2017-04-03, Version 3.2.0
 =========================
 
