@@ -273,8 +273,13 @@
         "security": [
           {
             "api_key": [],
+            "api_key_query": [],
             "basic": [],
-            "x-auth":["read_pets"]
+            "x-auth":["read_pets"],
+            "petstore_auth": [
+              "write:pets",
+              "read:pets"
+            ]
           }
         ]
       },
@@ -858,6 +863,11 @@
       "name": "api_key",
       "in": "header"
     },
+    "api_key_query": {
+      "type": "apiKey",
+      "name": "api_key",
+      "in": "query"
+    },
     "basic": {
       "type": "basic",
       "name": "basic"
@@ -865,7 +875,6 @@
     "x-auth": {
       "type": "oauth2",
       "name": "x-auth",
-      "in": "query",
       "authorizationUrl": "http://swagger.io/api/oauth/dialog",
       "flow": "implicit",
       "scopes": {

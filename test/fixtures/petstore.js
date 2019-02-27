@@ -5,4 +5,4 @@
 
 'use strict';
 
-module.exports = require('./petStore.json');
+module.exports = require('./petstore.json');
