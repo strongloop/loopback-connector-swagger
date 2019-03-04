@@ -43,7 +43,7 @@ describe('swagger connector', function() {
     });
 
     it('generates client from local swagger spec - .json file', function(done) {
-      const ds = createDataSource('test/fixtures/petstore.json');
+      const ds = createDataSource('test/fixtures/2.0/petstore.json');
       ds.on('connected', function() {
         ds.connector.should.have.property('client');
         ds.connector.client.should.have.property('apis');
@@ -52,7 +52,7 @@ describe('swagger connector', function() {
     });
 
     it('generates client from local swagger spec - .yaml file', function(done) {
-      const ds = createDataSource('test/fixtures/petstore.yaml');
+      const ds = createDataSource('test/fixtures/2.0/petstore.yaml');
       ds.on('connected', function() {
         ds.connector.should.have.property('client');
         ds.connector.client.should.have.property('apis');
@@ -61,7 +61,7 @@ describe('swagger connector', function() {
     });
 
     it('generates client from swagger spec object', function(done) {
-      const ds = createDataSource(require('./fixtures/petstore'));
+      const ds = createDataSource(require('./fixtures/2.0/petstore'));
       ds.on('connected', function() {
         ds.connector.should.have.property('client');
         ds.connector.client.should.have.property('apis');
@@ -74,7 +74,7 @@ describe('swagger connector', function() {
     describe('models without remotingEnabled', function() {
       let ds;
       before(function(done) {
-        ds = createDataSource('test/fixtures/petstore.json');
+        ds = createDataSource('test/fixtures/2.0/petstore.json');
         ds.on('connected', function() {
           done();
         });
@@ -109,7 +109,7 @@ describe('swagger connector', function() {
     describe.skip('models with remotingEnabled', function() {
       let ds;
       before(function(done) {
-        ds = createDataSource('test/fixtures/petstore.json', {
+        ds = createDataSource('test/fixtures/2.0/petstore.json', {
           remotingEnabled: true,
         });
         ds.on('connected', function() {
@@ -128,7 +128,7 @@ describe('swagger connector', function() {
     });
 
     it('allows models to be attached before the spec is loaded', done => {
-      const ds = createDataSource('test/fixtures/petstore.json');
+      const ds = createDataSource('test/fixtures/2.0/petstore.json');
       const PetService = ds.createModel('PetService', {});
 
       ds.once('connected', () => {
@@ -143,7 +143,7 @@ describe('swagger connector', function() {
     let ds, PetService;
 
     before(function(done) {
-      ds = createDataSource('test/fixtures/petstore.json');
+      ds = createDataSource('test/fixtures/2.0/petstore.json');
       ds.on('connected', function() {
         PetService = ds.createModel('PetService', {});
         done();

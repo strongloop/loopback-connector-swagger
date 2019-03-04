@@ -16,7 +16,7 @@ describe('Swagger connector - security', function() {
   describe('Basic auth', function() {
     it('supports basic auth', function(done) {
       givenDataSource(
-        'test/fixtures/petstore.json',
+        'test/fixtures/2.0/petstore.json',
         {
           basic: {
             username: 'aaabbbccc',
@@ -36,7 +36,7 @@ describe('Swagger connector - security', function() {
   describe('apiKey auth', function() {
     it('supports apiKey - in query', function(done) {
       givenDataSource(
-        'test/fixtures/petstore.json',
+        'test/fixtures/2.0/petstore.json',
         {
           api_key_query: 'abc12',
         },
@@ -49,7 +49,7 @@ describe('Swagger connector - security', function() {
 
     it('supports apiKey - in header', function(done) {
       givenDataSource(
-        'test/fixtures/petstore.json',
+        'test/fixtures/2.0/petstore.json',
         {
           api_key: 'abc12',
         },
@@ -65,7 +65,7 @@ describe('Swagger connector - security', function() {
   describe('oAuth2', function() {
     it('supports oauth2 - in header', function(done) {
       givenDataSource(
-        'test/fixtures/petstore.json',
+        'test/fixtures/2.0/petstore.json',
         {
           petstore_auth: {
             token: {
@@ -83,7 +83,7 @@ describe('Swagger connector - security', function() {
 
     it('supports oauth2 with token_type', function(done) {
       givenDataSource(
-        'test/fixtures/petstore.json',
+        'test/fixtures/2.0/petstore.json',
         {
           'x-auth': {
             token: {

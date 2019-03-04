@@ -21,7 +21,7 @@ describe('Swagger Spec resolver', function() {
   });
 
   it('Should set spec object when given spec is swagger specification object', function(done) {
-    const spec = require('./fixtures/petstore');
+    const spec = require('./fixtures/2.0/petstore');
     resolveSpec(spec, function(err, api) {
       if (err) return done(err);
       api.should.have.property('swagger');
@@ -39,7 +39,7 @@ describe('Swagger Spec resolver', function() {
 
   describe('File handling & spec resolution', function() {
     it('should read & set swagger spec from a local .json file', function(done) {
-      const spec = './test/fixtures/petstore.json';
+      const spec = './test/fixtures/2.0/petstore.json';
       resolveSpec(spec, function(err, api) {
         if (err) return done(err);
         api.should.have.property('swagger');
@@ -48,7 +48,7 @@ describe('Swagger Spec resolver', function() {
     });
 
     it('should read & set swagger spec from a local .yaml file', function(done) {
-      const spec = './test/fixtures/petstore.yaml';
+      const spec = './test/fixtures/2.0/petstore.yaml';
       resolveSpec(spec, function(err, api) {
         if (err) return done(err);
         api.should.have.property('swagger');
@@ -57,7 +57,7 @@ describe('Swagger Spec resolver', function() {
     });
 
     it('should support .yml extension for YAML spec files', function(done) {
-      const spec = './test/fixtures/petstore.yml';
+      const spec = './test/fixtures/2.0/petstore.yml';
       resolveSpec(spec, function(err, api) {
         if (err) return done(err);
         api.should.have.property('swagger');
@@ -66,7 +66,7 @@ describe('Swagger Spec resolver', function() {
     });
 
     it('should not accept other spec file formats than .json/.yaml', function(done) {
-      const spec = './test/fixtures/petstore.yaaml';
+      const spec = './test/fixtures/2.0/petstore.yaaml';
       resolveSpec(spec, function(err, api) {
         should.exist(err);
         done();
@@ -76,7 +76,7 @@ describe('Swagger Spec resolver', function() {
 
   describe('Spec validation against Swagger schema 2.0', function() {
     it('should validate provided specification against swagger spec. 2.0', function(done) {
-      const spec = './test/fixtures/petstore.yaml';
+      const spec = './test/fixtures/2.0/petstore.yaml';
       resolveSpec(spec, function(err, api) {
         if (err) return done(err);
         validateSpec(api, done);

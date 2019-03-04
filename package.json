@@ -7,6 +7,7 @@
   },
   "main": "index.js",
   "scripts": {
+    "pretest": "cd test/fixtures/lb4-ping-app && npm i && npm run build",
     "lint": "eslint .",
     "test": "mocha --opts test/mocha.opts",
     "posttest": "npm run lint"

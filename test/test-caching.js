@@ -6,7 +6,7 @@
 'use strict';
 
 const promisify = require('util').promisify;
-const echoService = require('./fixtures/echo-service');
+const echoService = require('./fixtures/lb3-echo/echo-service');
 const loopback = require('loopback');
 const should = require('should/as-function');
 
