@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2016,2018. All Rights Reserved.
+// Copyright IBM Corp. 2016,2019. All Rights Reserved.
 // Node module: loopback-connector-swagger
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -11,13 +11,10 @@ const should = require('should');
 const resolveSpec = require('../lib/spec-resolver').resolve;
 const validateSpec = require('../lib/spec-resolver').validate;
 
-describe('Swagger Spec resolver', function() {
-  it('Should set url when given spec is a url', function(done) {
+describe('Swagger Spec resolver', () => {
+  it('Should set url when given spec is a url', async () => {
     const spec = 'http://sample.com/swaggerAPI.json';
-    resolveSpec(spec, function(err, api) {
-      should.exist(err);
-      done();
-    });
+    resolveSpec(spec).should.be.rejectedWith('');
   });
 
   it('Should set spec object when given spec is swagger specification object', function(done) {
