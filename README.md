@@ -1,3 +1,5 @@
+**This repository is now deprecated. Please use https://github.com/strongloop/loopback-connector-openapi instead.**
+
 # loopback-connector-swagger
 The Swagger connector enables LoopBack applications to interact with other REST APIs described by the [OpenAPI (Swagger) Specification v.2.0](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md).
 
