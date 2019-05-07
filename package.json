@@ -30,5 +30,6 @@
     "url": "https://github.com/strongloop/loopback-connector-swagger.git"
   },
   "copyright.owner": "IBM Corp.",
-  "license": "MIT"
+  "license": "MIT",
+  "author": "IBM Corp."
 }
