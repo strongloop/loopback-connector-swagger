@@ -5,13 +5,13 @@
 
 'use strict';
 
-var should = require('should');
-var oAuth = require('../lib/oAuth');
+const should = require('should');
+const oAuth = require('../lib/oAuth');
 
 describe('oAuth - standalone', function() {
   describe('accessToken auth constructor', function() {
     it('creates AccessTokenAuthorization obj', function(done) {
-      var atAuth = new oAuth.AccessTokenAuthorization(
+      const atAuth = new oAuth.AccessTokenAuthorization(
         'sampleOAuth',
         'access_token_123',
         'header'
@@ -24,7 +24,7 @@ describe('oAuth - standalone', function() {
   });
 
   describe('access_token in query', function() {
-    var atAuth, reqObj;
+    let atAuth, reqObj;
     beforeEach(function(done) {
       atAuth = new oAuth.AccessTokenAuthorization('sampleOAuth',
         'sampleAccessToken',
@@ -35,7 +35,7 @@ describe('oAuth - standalone', function() {
 
     it('adds access token as querystring',
       function(done) {
-        var newUrl = reqObj.url + '?access_token=sampleAccessToken';
+        const newUrl = reqObj.url + '?access_token=sampleAccessToken';
         atAuth.apply(reqObj);
         reqObj.url.should.equal(newUrl);
         done();
@@ -44,7 +44,7 @@ describe('oAuth - standalone', function() {
     it('appends access token at the end of existing querystring',
       function(done) {
         reqObj.url = reqObj.url + '?abc=123';
-        var newUrl = reqObj.url + '&access_token=sampleAccessToken';
+        const newUrl = reqObj.url + '&access_token=sampleAccessToken';
         atAuth.apply(reqObj);
         reqObj.url.should.equal(newUrl);
         done();
@@ -52,7 +52,7 @@ describe('oAuth - standalone', function() {
 
     it('does not modify query if access_token is present', function(done) {
       reqObj.url = reqObj.url + '?access_token=sampleAccessToken';
-      var newUrl = reqObj.url;
+      const newUrl = reqObj.url;
       atAuth.apply(reqObj);
       reqObj.url.should.equal(newUrl);
       done();
@@ -60,7 +60,7 @@ describe('oAuth - standalone', function() {
   });
 
   describe('access_token in header', function() {
-    var atAuth, reqObj;
+    let atAuth, reqObj;
     beforeEach(function(done) {
       atAuth = new oAuth.AccessTokenAuthorization('sampleOAuth',
         'sampleAccessToken');
