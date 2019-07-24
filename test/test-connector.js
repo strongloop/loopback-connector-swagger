@@ -5,16 +5,16 @@
 
 'use strict';
 
-var assert = require('assert');
-var should = require('should');
-var loopback = require('loopback');
+const assert = require('assert');
+const should = require('should');
+const loopback = require('loopback');
 
 describe('swagger connector', function() {
   describe('swagger spec validatation against Swagger 2.0 specification',
     function() {
       it('when opted validates swagger spec: invalid spec',
         function(done) {
-          var dsErrorProne =
+          const dsErrorProne =
             createDataSource({'swagger': {'version': '2.0'}}, {validate: true});
           dsErrorProne.on('error', function(err) {
             should.exist(err);
@@ -24,7 +24,7 @@ describe('swagger connector', function() {
 
       it('when opted validates swagger spec: valid spec',
         function(done) {
-          var ds = createDataSource('http://petstore.swagger.io/v2/swagger.json');
+          const ds = createDataSource('http://petstore.swagger.io/v2/swagger.json');
           ds.on('connected', function() {
             ds.connector.should.have.property('client');
             ds.connector.client.should.have.property('apis');
@@ -36,7 +36,7 @@ describe('swagger connector', function() {
   describe('swagger client generation', function() {
     it('generates client from swagger spec url',
       function(done) {
-        var ds = createDataSource('http://petstore.swagger.io/v2/swagger.json');
+        const ds = createDataSource('http://petstore.swagger.io/v2/swagger.json');
         ds.on('connected', function() {
           ds.connector.should.have.property('client');
           ds.connector.client.should.have.property('apis');
@@ -46,7 +46,7 @@ describe('swagger connector', function() {
 
     it('generates client from local swagger spec - .json file',
       function(done) {
-        var ds = createDataSource('test/fixtures/petStore.json');
+        const ds = createDataSource('test/fixtures/petStore.json');
         ds.on('connected', function() {
           ds.connector.should.have.property('client');
           ds.connector.client.should.have.property('apis');
@@ -56,7 +56,7 @@ describe('swagger connector', function() {
 
     it('generates client from local swagger spec - .yaml file',
       function(done) {
-        var ds = createDataSource('test/fixtures/petStore.yaml');
+        const ds = createDataSource('test/fixtures/petStore.yaml');
         ds.on('connected', function() {
           ds.connector.should.have.property('client');
           ds.connector.client.should.have.property('apis');
@@ -66,7 +66,7 @@ describe('swagger connector', function() {
 
     it('generates client from swagger spec object',
       function(done) {
-        var ds = createDataSource(require('./fixtures/petStore'));
+        const ds = createDataSource(require('./fixtures/petStore'));
         ds.on('connected', function() {
           ds.connector.should.have.property('client');
           ds.connector.client.should.have.property('apis');
@@ -77,7 +77,7 @@ describe('swagger connector', function() {
 
   describe('models', function() {
     describe('models without remotingEnabled', function() {
-      var ds;
+      let ds;
       before(function(done) {
         ds = createDataSource('test/fixtures/petStore.json');
         ds.on('connected', function() {
@@ -86,14 +86,14 @@ describe('swagger connector', function() {
       });
 
       it('creates models', function(done) {
-        var PetService = ds.createModel('PetService', {});
+        const PetService = ds.createModel('PetService', {});
         (typeof PetService.getPetById).should.eql('function');
         (typeof PetService.addPet).should.eql('function');
         done();
       });
 
       it('supports model methods', function(done) {
-        var PetService = ds.createModel('PetService', {});
+        const PetService = ds.createModel('PetService', {});
         PetService.getPetById({petId: 1}, function(err, res) {
           if (err) return done(err);
           res.status.should.eql(200);
@@ -102,7 +102,7 @@ describe('swagger connector', function() {
       });
 
       it('supports model methods returning a Promise', done => {
-        var PetService = ds.createModel('PetService', {});
+        const PetService = ds.createModel('PetService', {});
         PetService.getPetById({petId: 1}).then(
           function onSuccess(res) {
             res.should.have.property('status', 200);
@@ -125,7 +125,7 @@ describe('swagger connector', function() {
       });
 
       it('creates models', function(done) {
-        var PetService = ds.createModel('PetService', {});
+        const PetService = ds.createModel('PetService', {});
         (typeof PetService.getPetById).should.eql('function');
         PetService.getPetById.shared.should.equal(true);
         (typeof PetService.addPet).should.eql('function');
@@ -147,7 +147,7 @@ describe('swagger connector', function() {
   });
 
   describe('Swagger invocations', function() {
-    var ds, PetService;
+    let ds, PetService;
 
     before(function(done) {
       ds = createDataSource('test/fixtures/petStore.json');
@@ -167,17 +167,17 @@ describe('swagger connector', function() {
     it('supports a request for xml content', function(done) {
       PetService.getPetById({petId: 1},
         {responseContentType: 'application/xml'},
-          function(err, res) {
-            if (err) return done(err);
-            res.status.should.eql(200);
-            res.headers['content-type'].should.eql('application/xml');
-            done();
-          });
+        function(err, res) {
+          if (err) return done(err);
+          res.status.should.eql(200);
+          res.headers['content-type'].should.eql('application/xml');
+          done();
+        });
     });
 
     it('invokes connector-hooks', function(done) {
-      var events = [];
-      var connector = ds.connector;
+      const events = [];
+      const connector = ds.connector;
       connector.observe('before execute', function(ctx, next) {
         assert(ctx.req);
         events.push('before execute');

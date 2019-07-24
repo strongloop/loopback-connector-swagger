@@ -5,13 +5,13 @@
 
 'use strict';
 
-var should = require('should');
-var resolveSpec = require('../lib/spec-resolver').resolveSpec;
-var validateSpec = require('../lib/spec-resolver').validateSpec;
+const should = require('should');
+const resolveSpec = require('../lib/spec-resolver').resolveSpec;
+const validateSpec = require('../lib/spec-resolver').validateSpec;
 
 describe('Swagger Spec resolver', function() {
   it('Should set url when given spec is a url', function(done) {
-    var self = setSpec('http://sample.com/swaggerAPI.json');
+    const self = setSpec('http://sample.com/swaggerAPI.json');
     resolveSpec(self, function(err) {
       if (err) return done(err);
       self.should.have.property('url');
@@ -22,7 +22,7 @@ describe('Swagger Spec resolver', function() {
 
   it('Should set spec object when given spec is swagger specification object',
     function(done) {
-      var self = setSpec(require('./fixtures/petStore'));
+      const self = setSpec(require('./fixtures/petStore'));
       resolveSpec(self, function(err) {
         if (err) return done(err);
         self.spec.should.have.property('swagger');
@@ -32,7 +32,7 @@ describe('Swagger Spec resolver', function() {
 
   it('Should not accept specification types other than string/plain object',
     function(done) {
-      var self = setSpec(function test() { });
+      const self = setSpec(function test() { });
       resolveSpec(self, function(err) {
         should.exist(err);
         done();
@@ -42,7 +42,7 @@ describe('Swagger Spec resolver', function() {
   describe('File handling & spec resolution', function() {
     it('should read & set swagger spec from a local .json file',
       function(done) {
-        var self = setSpec('./test/fixtures/petStore.json');
+        const self = setSpec('./test/fixtures/petStore.json');
         resolveSpec(self, function(err) {
           if (err) return done(err);
           self.spec.should.have.property('swagger');
@@ -52,7 +52,7 @@ describe('Swagger Spec resolver', function() {
 
     it('should read & set swagger spec from a local .yaml file',
       function(done) {
-        var self = setSpec('./test/fixtures/petStore.yaml');
+        const self = setSpec('./test/fixtures/petStore.yaml');
         resolveSpec(self, function(err) {
           if (err) return done(err);
           self.spec.should.have.property('swagger');
@@ -62,7 +62,7 @@ describe('Swagger Spec resolver', function() {
 
     it('should support .yml extension for YAML spec files',
       function(done) {
-        var self = setSpec('./test/fixtures/petStore.yml');
+        const self = setSpec('./test/fixtures/petStore.yml');
         resolveSpec(self, function(err) {
           if (err) return done(err);
           self.spec.should.have.property('swagger');
@@ -72,7 +72,7 @@ describe('Swagger Spec resolver', function() {
 
     it('should not accept other spec file formats than .json/.yaml',
       function(done) {
-        var self = setSpec('./test/fixtures/petStore.yaaml');
+        const self = setSpec('./test/fixtures/petStore.yaaml');
         resolveSpec(self, function(err) {
           should.exist(err);
           done();
@@ -83,8 +83,8 @@ describe('Swagger Spec resolver', function() {
   describe('Spec validation against Swagger schema 2.0', function() {
     it('should validate provided specification against swagger spec. 2.0',
       function(done) {
-        var self = setSpec('./test/fixtures/petStore.yaml');
-        var error = null;
+        const self = setSpec('./test/fixtures/petStore.yaml');
+        const error = null;
         resolveSpec(self, function(err) {
           if (err) return done(err);
           validateSpec(self.spec, done);
@@ -92,7 +92,7 @@ describe('Swagger Spec resolver', function() {
       });
 
     it('should throw error if validation fails', function(done) {
-      var self = setSpec({this: 'that'});
+      const self = setSpec({this: 'that'});
       resolveSpec(self, function(err) {
         if (err) return done(err);
         validateSpec(self.spec, function(err) {
